@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
+import TopPanel from './components/TopPanel';
+
 
 function App() {
 
-    const [value, setValue] = useState("Ваш текст");
+    const [mainImage, setMainImage] = useState(null);
 
   return (
-    <div className="App">
-          <h1>{value}</h1>
-          <input
-              type = "text"
-              value = {value}
-              onChange={event => setValue(event.target.value)}
-          ></input>
+      <div className="App">
+          <TopPanel mainImage={mainImage} setMainImage={setMainImage} />
+          
+
+          {mainImage && (
+              <div>
+                  <img
+                      alt="not found"
+                      src={URL.createObjectURL(mainImage)}
+                  />
+                  <br />
+              </div>
+          )}
     </div>
   );
 }

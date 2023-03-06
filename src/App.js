@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import Crop from './components/Crop';
+import ToolPanel from './components/ToolPanel';
 import TopPanel from './components/TopPanel';
-
 
 function App() {
 
@@ -9,7 +10,7 @@ function App() {
   return (
       <div className="App">
           <TopPanel mainImage={mainImage} setMainImage={setMainImage} />
-          
+          <ToolPanel mainImage={mainImage} setMainImage={setMainImage} />
 
           {mainImage && (
               <div>
@@ -20,6 +21,7 @@ function App() {
                   <br />
               </div>
           )}
+          <Crop src={mainImage} setSrc={setMainImage} />
     </div>
   );
 }

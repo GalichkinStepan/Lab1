@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver'
 const DownloadComponent = function (props) {
 
     const downloadImage = () => {
-        saveAs(URL.createObjectURL(props.image))
+        saveAs(props.imageURL)
     }
 
     return (

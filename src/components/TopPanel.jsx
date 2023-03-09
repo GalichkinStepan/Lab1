@@ -7,7 +7,7 @@ const TopPanel = function (props) {
     return (
         <div>
             <UploadComponent setImage={props.setMainImage} />
-            <DownloadComponent image={props.mainImage} />
+            <DownloadComponent imageURL={props.mainImageURL}/>
             <button onClick={() => props.setMainImage(null)}>Remove</button>
             
         </div>

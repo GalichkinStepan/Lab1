@@ -6,10 +6,6 @@ const Crop = (props) => {
     const [setImage] = useState(null);
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
 
-    const handleFileChange = (e) => {
-        props.setSrc(URL.createObjectURL(e.target.files[0]));
-    };
-
     function getCroppedImg() {
 
         const canvas = document.getElementById("canvas"); 
@@ -32,14 +28,17 @@ const Crop = (props) => {
             crop.width,
             crop.height
         );
+
+        props.setImageURL(canvas.toDataURL());
+        props.setAppState(null);
     }
     return (
         <div className="container">
             <div className="row">
-                {props.src && (
+                {props.image && (
                     <div>
                         <ReactCrop crop={crop} onChange={setCrop}>
-                            <img id="result" src={URL.createObjectURL(props.src)} alt="description" onLoad={setImage} />
+                            <img id="result" src={URL.createObjectURL(props.image)} alt="description" onLoad={setImage} />
                         </ReactCrop>
                         <button className="btn btn-danger" onClick={getCroppedImg}>
                             Crop image
@@ -51,7 +50,6 @@ const Crop = (props) => {
                     width={crop.width}
                     height={crop.height}
                     style={{
-                        border: "1px solid black",
                         objectFit: "contain"
                     }}
                 ></canvas>

@@ -5,7 +5,7 @@ const ToolPanel = function (props) {
 
     return (
         <div>
-            <CropButton image={props.mainImage} setImage={props.setMainImage}/>
+            <CropButton setAppState={props.setAppState}/>
         </div>
     );
 };

@@ -3,12 +3,12 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 const Crop = (props) => {
-    const [setImage] = useState(null);
+
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
 
     function getCroppedImg() {
 
-        const canvas = document.getElementById("canvas"); 
+        const canvas = document.createElement('canvas'); 
         const image = document.getElementById("result");
         const ctx = canvas.getContext("2d");
 
@@ -16,6 +16,10 @@ const Crop = (props) => {
 
         const imageWidthRatio = image.naturalWidth / image.width;
         const imageHeightRatio = image.naturalHeight / image.height;
+
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        canvas.style.objectFit = "contain";
 
         ctx.drawImage(
             image,
@@ -35,24 +39,17 @@ const Crop = (props) => {
     return (
         <div className="container">
             <div className="row">
-                {props.image && (
+                {props.imageURL && (
                     <div>
                         <ReactCrop crop={crop} onChange={setCrop}>
-                            <img id="result" src={URL.createObjectURL(props.image)} alt="description" onLoad={setImage} />
+                            <img id="result" src={props.imageURL} alt="not found"/>
                         </ReactCrop>
                         <button className="btn btn-danger" onClick={getCroppedImg}>
                             Crop image
                         </button>
                     </div>
                 )}
-                <canvas
-                    id="canvas"
-                    width={crop.width}
-                    height={crop.height}
-                    style={{
-                        objectFit: "contain"
-                    }}
-                ></canvas>
+                
             </div>
         </div>
     );

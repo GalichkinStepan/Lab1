@@ -4,12 +4,12 @@ import { saveAs } from 'file-saver'
 const DownloadComponent = function (props) {
 
     const downloadImage = () => {
-        saveAs(props.imageURL)
+        saveAs(props.imageURL);
     }
 
     return (
         <div>
-            <button onClick={downloadImage} disabled={!(props.image)}>Download!</button>
+            <button onClick={downloadImage} disabled={!(props.imageURL)}>Download!</button>
         </div>
     );
 };

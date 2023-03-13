@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Rotate = function (props) {
 
+    const [sizeImg, setCrop] = useState({ aspect: 16 / 9 });
+
     function rotate() {
 
-        var canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas');
+        const image = new Image();
+        const ctx = canvas.getContext("2d");
 
-        canvas.width = "1000"; 
-        canvas.height = "1000"; 
+        image.src = props.imageURL;
 
-        var img = document.createElement("img");
-        img.src = props.ImageURL; 
+        canvas.width = sizeImg.width; 
+        canvas.height = sizeImg.height; 
+        canvas.style.objectFit = "contain";
 
-        var ctx = canvas.getContext("2d");
-
-        ctx.rotate(90 * Math.PI / 180); // rotate by 90 degrees
-        ctx.drawImage(img, 100, 100); //draw it
-        ctx.fill();
+        ctx.rotate(90 * Math.PI / 180);
+        image.onload = () => {
+            ctx.drawImage(image, 0, 0);
+        }
 
         props.setImageURL(canvas.toDataURL());
     }
 
     return (
-        <button onClick={rotate()}></button>
+        <div>
+            <button onClick={() => rotate()}>Rotate</button>
+        </div>
     );
 };
 

@@ -6,22 +6,27 @@ const Rotate = function (props) {
 
     function rotate() {
 
-        const canvas = document.createElement('canvas');
-        const image = new Image();
-        const ctx = canvas.getContext("2d");
+        let ctx = canvasRef.current.getContext("2d");
+        let image = document.getElementById("mainImage");
+        console.log(image);
 
-        image.src = props.imageURL;
+        ctx.drawImage(image, 0, 0);
 
-        canvas.width = sizeImg.width; 
-        canvas.height = sizeImg.height; 
-        canvas.style.objectFit = "contain";
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-        ctx.rotate(90 * Math.PI / 180);
-        image.onload = () => {
-            ctx.drawImage(image, 0, 0);
-        }
+        canvasRef.current.width = image.width;
+        canvasRef.current.height = image.height;
 
-        props.setImageURL(canvas.toDataURL());
+        console.log(image.length + " " + image.width);
+
+        ctx.save();
+        ctx.translate(canvasRef.current.width / 2, canvasRef.current.height / 2);
+        //setRotation(rotation + 90);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.drawImage(image, -image.width / 2, -image.width / 2);
+        ctx.restore();
+
+        setMainImageURL(canvasRef.current.toDataURL());
     }
 
     return (

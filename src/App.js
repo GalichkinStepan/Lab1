@@ -1,11 +1,9 @@
 import React, { useState, useRef } from 'react';
 import Crop from './components/Crop';
 import { saveAs } from 'file-saver';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
-const DrawOnCanvas = (props) => {
-
-    return <canvas width={500} height={500} ref={props.propRef}></canvas>
-}
 
 function App() {
 
@@ -13,44 +11,58 @@ function App() {
     const [mainImageURL, setMainImageURL] = useState(null);
     const [appState, setAppState] = useState(null);
 
-    const [rotation, setRotation] = useState(0);
+    //const [rotation, setRotation] = useState(0);
 
-    const myref = useRef(null);
+    var rotation = 0;
+
+    const canvasRef = useRef(null);
 
     const downloadImage = () => {
+        saveURL();
         saveAs(mainImageURL);
+    }
+
+    function saveURL() {
+        let image = document.getElementById("mainImage");
+        htmlToImage.toJpeg(image)
+            .then(function (dataUrl) {
+                setMainImageURL(dataUrl);
+            });
     }
 
     function RotateMainImage() {
         let image = document.getElementById("mainImage");
-        setRotation(rotation + 90);
-        image.style.transform = 'rotate(' + rotation + 'deg)'; 
-        setMainImageURL(image.src);
-        
+        rotation += 90;
+        image.style.transform = 'rotate(' + rotation + 'deg)';
     }
 
-    function RewriteURL() {
-        let ctx = myref.current.getContext("2d");
+    function WhiteBlack(k) {
         let image = document.getElementById("mainImage");
-        console.log(image);
+        image.style.filter += "grayscale(" + k + ")";
+    }
 
-        ctx.drawImage(image, 0, 0); 
+    function Brightness(k) {
+        let image = document.getElementById("mainImage");
+        image.style.filter += "brightness(" + k + ")";
+    }
 
-        ctx.clearRect(0, 0, myref.current.width, myref.current.height);
+    function Contrast(k) {
+        let image = document.getElementById("mainImage");
+        image.style.filter += "contrast(" + k + ")";
+    }
 
-        myref.current.width = image.width;
-        myref.current.height = image.height; 
+    function Blur(k) {
+        let image = document.getElementById("mainImage");
+        image.style.filter += "blur(" + k + "px)";
+    }
 
-        console.log(image.length + " " + image.width);
+    function Invert(k) {
+        let image = document.getElementById("mainImage");
+        image.style.filter += "invert(" + k + "%)";
+    }
 
-        ctx.save();
-        ctx.translate(myref.current.width / 2, myref.current.height / 2);
-        setRotation(rotation + 90);
-        ctx.rotate(rotation * Math.PI / 180);
-        ctx.drawImage(image, -image.width / 2, -image.width / 2);
-        ctx.restore();
-
-        setMainImageURL(myref.current.toDataURL());
+    function CheckNew() {
+        saveURL();
     }
 
   return ( 
@@ -81,7 +93,7 @@ function App() {
           </div>
 
 
-          {mainImageURL && (
+          {mainImageURL && appState== null && (
               <div>
                   <img
                       id ="mainImage"
@@ -98,14 +110,14 @@ function App() {
           )}
 
           <div className="ToolPanel">
-              <button onClick={() => { RotateMainImage() }}>Rotate</button>
-              <button onClick={() => { setAppState("Crop") }}> Crop</button>
-              <button onClick={() => { RewriteURL() }}>Check</button>
+              <button onClick={() => { saveURL(); setAppState("Crop");}}> Crop</button>
+              <button onClick={() => { WhiteBlack(5) }}> WhiteBlack</button>
+              <button onClick={() => { Brightness(3) }}> Brightness</button>
+              <button onClick={() => { Contrast(20) }}> Contrast</button>
+              <button onClick={() => { Blur(1) }}> Blur</button>
+              <button onClick={() => { Invert(100) }}> Invert</button>
+              <button onClick={() => { CheckNew() }}>Check</button>
           </div>
-
-          
-
-          <DrawOnCanvas propRef={myref}/>
 
     </div>
   );

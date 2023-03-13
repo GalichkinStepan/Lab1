@@ -42,7 +42,7 @@ const Crop = (props) => {
                 {props.imageURL && (
                     <div>
                         <ReactCrop crop={crop} onChange={setCrop}>
-                            <img id="result" src={props.imageURL} alt="not found"/>
+                            <img id="result" src={props.imageURL} alt="not found" />
                         </ReactCrop>
                         <button className="btn btn-danger" onClick={getCroppedImg}>
                             Crop image
